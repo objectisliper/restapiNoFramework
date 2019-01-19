@@ -1,0 +1,30 @@
+{% extends "Layout.html" %}
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 60px;flex-flow: column;">
+    <div class="card" style="width: 54rem;">
+        <div class="card-body">
+            <h5 class="card-title">Create new card</h5>
+            <form class="form-signin" action="/edit_task/{{task.id}}" method="POST">
+                <div class="form-label-group">
+                    <input value="{{task.username}}" type="text" id="username" class="form-control" placeholder="Username" required autofocus name="username">
+                    <label for="username">Username</label>
+                </div>
+
+                <div class="form-label-group">
+                    <input value="{{task.email}}" type="text" id="email" class="form-control" placeholder="Email" required name="email">
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="form-label-group">
+                    <textarea name="description" id="description" cols="30" rows="10" style="resize: none; width: 100%;">{{task.description}}</textarea>
+                    <label for="description">Description</label>
+                </div>
+                {% if error %}
+                <h4 style="color: red;">{{ error }}</h4>
+                {% endif %}
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

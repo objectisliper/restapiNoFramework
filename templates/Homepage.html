@@ -1,0 +1,73 @@
+{% extends "Layout.html" %}
+{% block content %}
+{% if not auth %}
+<a href="/login" class="btn btn-primary" style="position: fixed; right: 10px; top: 10px;">login</a>
+{% endif %}
+{% if auth %}
+<a href="/logout" class="btn btn-danger" style="position: fixed; right: 10px; top: 10px;">logout</a>
+{% endif %}
+<div class="container d-flex justify-content-center align-items-center" style="padding-top: 60px;flex-flow: column;">
+    <a href="/create_task" class="btn btn-primary" style="margin-bottom: 20px;">Create task</a>
+    <table id="example" class="display" style="width:100%">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Description</th>
+            <th>Status</th>
+            {% if auth %}
+            <th>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.1 }}</td>
+            <td>{{ task.4 }}</td>
+            <td>{{ task.2 }}</td>
+            <td id="status-{{task.0}}">{{ task.3 ? 'completed' : 'in work' }}</td>
+            {% if auth %}
+            <td>
+                <a class="btn btn-info" style="color: white;" href="/edit_task/{{ task.0 }}">Edit</a>
+                {% if not task.3 %}
+                <button class="btn btn-success complete-task" id="{{ task.0 }}" style="margin-left: 10px; color: white;">Complete task</button>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        <tfoot>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Description</th>
+            <th>Status</th>
+            {% if auth %}
+            <th>Actions</th>
+            {% endif %}
+        </tr>
+        </tfoot>
+    </table>
+</div>
+<script>
+    $(document).ready(function() {
+        let table = $('#example').DataTable({
+            "bLengthChange": false,
+            "iDisplayLength": 3
+        });
+        
+        $('.complete-task').on('click', function () {
+            let that = this;
+            $.ajax({
+                method: "PUT",
+                url: "/complete_task/"+this.id,
+            })
+                .done(function( msg ) {
+                    $('#status-'+that.id).text('completed');
+                    $("#"+that.id).remove();
+                });
+        })
+    } );
+</script>
+{% endblock %}
