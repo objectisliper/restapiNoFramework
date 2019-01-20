@@ -8,15 +8,22 @@
 
 declare(strict_types = 1);
 
+use App\Controllers\UsersApiController;
 
-return [
-    ['GET', '/', ['App\Controllers\Homepage', 'show']],
-    ['GET', '/login', ['App\Controllers\Auth', 'loginPage']],
-    ['POST', '/login', ['App\Controllers\Auth', 'login']],
-    ['GET', '/logout', ['App\Controllers\Auth', 'logout']],
-    ['GET', '/create_task', ['App\Controllers\TaskController', 'index']],
-    ['POST', '/create_task', ['App\Controllers\TaskController', 'index']],
-    ['GET', '/edit_task/{id}', ['App\Controllers\TaskController', 'editTask']],
-    ['POST', '/edit_task/{id}', ['App\Controllers\TaskController', 'editTask']],
-    ['PUT', '/complete_task/{id}', ['App\Controllers\TaskController', 'editTask']],
+$routes = [
+    ['GET', '/get_categories', ['App\Controllers\CategoriesApiController', 'getCategoriesList']],
+    ['GET', '/get_products_in_category/{id}', ['App\Controllers\ProductsApiController', 'getProductsListByCategory']],
+    ['POST', '/register_user', ['App\Controllers\UsersApiController', 'registerUser']],
+    ['POST', '/login', ['App\Controllers\UsersApiController', 'login']],
+    ['GET', '/get_products', ['App\Controllers\ProductsApiController', 'getProductsList']],
 ];
+
+if (isset($_SERVER['HTTP_AUTHORIZATION']) && UsersApiController::isAuthGuard($_SERVER['HTTP_AUTHORIZATION'])) {
+    $routes[] = ['POST', '/create_product', ['App\Controllers\ProductsApiController', 'createProduct']];
+    $routes[] = ['DELETE', '/delete_product/{id}', ['App\Controllers\ProductsApiController', 'deleteProduct']];
+    $routes[] = ['PUT', '/update_product/{id}', ['App\Controllers\ProductsApiController', 'updateProduct']];
+    $routes[] = ['POST', '/create_category', ['App\Controllers\CategoriesApiController', 'createCategory']];
+    $routes[] = ['DELETE', '/delete_category/{id}', ['App\Controllers\CategoriesApiController', 'deleteCategory']];
+    $routes[] = ['PUT', '/update_category/{id}', ['App\Controllers\CategoriesApiController', 'updateCategory']];
+}
+return $routes;
