@@ -24,7 +24,7 @@ to migrate tables in your database.
 If everything is ok, going to public repo, and use:
 
 ```
-
+php -S localhost:8000
 ```
 
 to host project.
