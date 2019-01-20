@@ -88,3 +88,5 @@ In query must be field - title
 >PUT /update_category/{id}
 
 >Delete /delete_category/{id}
+
+(c)Everything was tested with postman.
