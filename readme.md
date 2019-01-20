@@ -30,7 +30,7 @@ php -S localhost:8000
 to host project.
 
 ## Wasted time 
->2h to install and configure all lib.
+>2h to install and configure all libs.
 
 >2h to hate doctrine.
 
